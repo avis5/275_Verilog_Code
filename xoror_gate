@@ -1,0 +1,136 @@
+//design code
+module xoror(in_1,in_2,in_3,in_4,out_1,out_2,out_3,out_4);
+  input in_1;
+  input in_2;
+  input in_3;
+  input in_4;
+  output out_1;
+  output out_2;
+  output out_3;
+  output out_4;
+  assign out_1=in_1;
+  wire o2,o3,o4;
+  	xor xor1(out_2, in_1, in_2);
+  	or or1(o3,in_1,in_2);
+  	xor xor2(out_3,o3,in_3);
+  	or or2(o4,o3,in_3);
+  	xor xor3(out_4,o4,in_4);
+endmodule
+
+//testbench code
+`timescale 1ns/1ps
+module testbench();
+  reg a1, b1, c1, d1;
+  wire o5, o6, o7, o8;
+  
+  xoror A(a1, b1, c1, d1, o5, o6, o7, o8);
+  initial begin
+  
+//display /dumpwaves
+    $dumpfile("dump.vcd");
+//displays testbench and design
+    $dumpvars(1,testbench);
+//set inputs to 0
+    a1=1'b0;
+    b1=1'b0;
+    c1=1'b0;
+    d1=1'b0;
+    #1
+//set inputs to 1
+    a1=1'b1;
+    b1=1'b1;
+    c1=1'b1;
+    d1=1'b1;
+ 	#1
+//set input a to 1, rest 0
+    a1=1'b1;
+    b1=1'b0;
+    c1=1'b0;
+    d1=1'b0;
+    #1
+//set input b to 1, rest 0
+    a1=1'b0;
+    b1=1'b1;
+    c1=1'b0;
+    d1=1'b0;
+    #1
+//set input c to 1, rest 0
+    a1=1'b0;
+    b1=1'b0;
+    c1=1'b1;
+    d1=1'b0;    
+    #1
+//set input d to 1, rest 0
+    a1=1'b0;
+    b1=1'b0;
+    c1=1'b0;
+    d1=1'b1;
+    #1
+//set input a and b to 1, rest 0
+    a1=1'b1;
+    b1=1'b1;
+    c1=1'b0;
+    d1=1'b0;
+    #1
+//set input a and c to 1, rest 0
+    a1=1'b1;
+    b1=1'b0;
+    c1=1'b1;
+    d1=1'b0;
+    #1
+//set input a and d to 1, rest 0
+    a1=1'b1;
+    b1=1'b0;
+    c1=1'b0;
+    d1=1'b1;
+    #1
+//set input b and c to 1, rest 0
+    a1=1'b0;
+    b1=1'b1;
+    c1=1'b1;
+    d1=1'b0;
+    #1
+//set input b and d to 1, rest 0
+    a1=1'b0;
+    b1=1'b1;
+    c1=1'b0;
+    d1=1'b1;
+    #1
+//set input c and d to 1, rest 0
+    a1=1'b0;
+    b1=1'b0;
+    c1=1'b1;
+    d1=1'b1;
+    #1
+//set input a and b and c to 1, rest 0
+    a1=1'b1;
+    b1=1'b1;
+    c1=1'b1;
+    d1=1'b0;
+    #1
+//set input a, b and d to 1, rest 0
+    a1=1'b1;
+    b1=1'b1;
+    c1=1'b0;
+    d1=1'b1;
+    #1
+//set input b, d and c to 1, rest 0
+    a1=1'b0;
+    b1=1'b1;
+    c1=1'b1;
+    d1=1'b1;
+  	#1
+//set input a, d, c to 1, rest 0
+    a1=1'b1;
+    b1=1'b0;
+    c1=1'b1;
+    d1=1'b1;
+    #1
+//set input a and b and c to 1, rest 0
+    a1=1'b1;
+    b1=1'b1;
+    c1=1'b1;
+    d1=1'b0;
+    
+  end
+endmodule
