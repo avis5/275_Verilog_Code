@@ -1,0 +1,63 @@
+//design code
+module two_by_four(x0, x1, Enable, y0, y1, y2, y3);
+  input x0, x1, Enable;
+  output y0, y1, y2, y3;
+  wire o1, o2;
+  	not not1(o1, x0);
+  	not not2(o2, x1);
+  	and and1(y0, o1, o2, Enable);
+  	and and2(y1, x0, o2, Enable);
+  	and and3(y2, o1, x1, Enable);
+  	and and4(y3, x0, x1, Enable);
+endmodule
+
+module three_to_eight(A0, A1, A2, D0, D1, D2, D3, D4, D5, D6, D7);
+  input A0, A1, A2;
+  output D0, D1, D2, D3, D4, D5, D6, D7;
+  wire p1, p2, p3;
+  	not newnot(p1, A2);
+  	two_by_four TF1(A0, A1, p1, D0, D1, D2, D3);
+  	two_by_four TF2(A0, A1, A2, D4, D5, D6, D7);
+endmodule
+
+
+//testbench code
+`timescale 1ns/1ps
+module testbench();
+  reg a1, b1, c1;
+  // for both regulars: reg a1, b1, c1;
+  wire w1, w2, w3, w4, w5, w6, w7, w8;
+  //wire w1, w2, w3, w4;
+  three_to_eight D(a1, b1, c1, w1, w2, w3, w4, w5, w6, w7, w8);
+  //two_by_four L(a1, b1, c1, w1, w2, w3, w4);
+  //two_by_four_simp C(a1, b1, w1, w2, w3, w4);
+  initial begin
+    
+//display /dumpwaves
+    $dumpfile("dump.vcd");
+//displays testbench and design
+    $dumpvars(1,testbench);
+// set inputs to 0 0 1
+    a1 = 1'b0;
+    b1 = 1'b0;
+    c1 = 1'b0;
+    #1
+//test case #1: 0 1 0 
+    a1 = 1'b0;
+    b1 = 1'b1;
+    c1 = 1'b1;
+    #1
+// test case #2: 0 1 1 
+    a1 = 1'b1;
+    b1 = 1'b1;
+    c1 = 1'b0;
+    #1
+// set inputs to 1 0 0 
+    a1 = 1'b0;
+    b1 = 1'b0;
+    c1 = 1'b0;
+    
+  end
+endmodule
+
+
