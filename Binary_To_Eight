@@ -68,3 +68,39 @@ endmodule
 
 
 //testbench code
+`timescale 1ns/1ps
+
+module testbench();
+  	reg [3:0]A,B;
+  	reg [1:0]S;
+  	wire [3:0]F;
+  	wire OF;
+  	wire [7:0] SEVENSEG;
+  	SimpleALU ALUU(A, B, S, OF, F, SEVENSEG);
+
+  initial begin
+  //display /dumpwaves
+      $dumpfile("dump.vcd");
+  //displays testbench and design
+      $dumpvars(1,testbench);
+  // As to 1111 and Bs to 1111 
+      A = 4'b0011;
+      B = 4'b0011;
+      S = 2'b01;
+      #1
+  //As = 1010 and Bs = 0101 
+      A = 4'b0101;
+      B = 4'b0101;
+      S = 2'b01;
+      #1
+  // As = 0111 and Bs = 0001
+      A = 4'b0111;
+      B = 4'b0001;
+      S = 2'b00;
+      #1
+  // As and Bs to 0
+      A = 4'b0000;
+      B = 4'b0000;
+      S = 2'b11;
+    end
+  endmodule
