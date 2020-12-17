@@ -1,0 +1,73 @@
+//design code
+module adder_gate(A,B,CI,S,CO);
+  input A, B, CI;
+  output S, CO;
+  wire o1,o2,o3;
+  	xor xor1(o1, A, B);
+  	and and1(o2, A, B);
+  	xor xor2(S, o1, CI);
+  	and and2(o3, o1, CI);
+  	or or1(CO, o3, o2);
+endmodule
+
+module three_bit_adder_gate(Z0, Z1, Z2, Y0, Y1, Y2, X, J0, J1, J2, K);
+  input Z0, Z1, Z2, Y0, Y1, Y2, X;
+  output J0, J1, J2, K;
+  wire T1, T2;
+  	adder_gate OAG (Z0, Y0, X, J0, T1);
+  	adder_gate TAG (Z1, Y1, T1, J1, T2);
+  	adder_gate TTAG (Z2, Y2, T2, J2, K);
+endmodule
+
+//testbench code
+`timescale 1ns/1ps
+module testbench();
+  reg a1, b1, c1, d1, e1, f1, g1;
+  wire w1, w2, w3, w4;
+  
+  ///adder_gate U(a1,b1,c1,w1,w2);
+  three_bit_adder_gate P(a1,b1,c1,d1,e1,f1,g1,w1,w2,w3,w4);
+  initial begin
+    
+//display /dumpwaves
+    $dumpfile("dump.vcd");
+//displays testbench and design
+    $dumpvars(1,testbench);
+// set inputs to 0
+    a1 = 1'b0;
+    b1 = 1'b0;
+    c1 = 1'b0;
+    d1 = 1'b0;
+    e1 = 1'b0;
+    f1 = 1'b0; 
+    g1 = 1'b0;
+    #1
+//test case #1: 0101011
+    a1 = 1'b1;
+    b1 = 1'b1;
+    c1 = 1'b0;
+    d1 = 1'b1;
+    e1 = 1'b0;
+    f1 = 1'b1;
+    g1 = 1'b0;
+    #1
+// test case #2: 0001011
+    a1 = 1'b1;
+    b1 = 1'b1;
+    c1 = 1'b0;
+    d1 = 1'b1;
+    e1 = 1'b0;
+    f1 = 1'b0;
+    g1 = 1'b0;
+    #1
+// set inputs to 0
+    a1 = 1'b0;
+    b1 = 1'b0;
+    c1 = 1'b0;
+    d1 = 1'b0;
+    e1 = 1'b0;
+    f1 = 1'b0; 
+    g1 = 1'b0;
+    
+  end
+endmodule
